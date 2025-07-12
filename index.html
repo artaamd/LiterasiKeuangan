@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>dasbor untuk ambil data, silahkan tmn2 kalo butuh data dari referensi, ada dsni semua</title>
     <!-- Chosen Palette: Professional Blue & Neutral Gray -->
-    <!-- Application Structure Plan: A top-down, data-driven dashboard. It starts with National KPIs & Trends, then allows interactive exploration of national demographic data via a filterable chart. It then deep-dives into the Gorontalo Case Study (IPM, Literacy, Economy). A new, comprehensive section on Bank Indonesia's "Cinta Bangga Paham Rupiah" survey has been added, with its own trends, breakdowns, and media analysis. The dashboard concludes with a detailed look at National Credit Access. This structure was chosen to transform the static report data into an explorable narrative, allowing users to see the big picture and then drill down into specific areas of interest seamlessly. -->
+    <!-- Application Structure Plan: A top-down, data-driven dashboard. It starts with National KPIs & Trends, then allows interactive exploration of national demographic data via a filterable chart. It then deep-dives into the Gorontalo Case Study (IPM, Literacy, Economy), including a new qualitative chart for dominant economic sectors. A comprehensive section on Bank Indonesia's "Cinta Bangga Paham Rupiah" survey follows, with its own trends, breakdowns, and media analysis. The dashboard concludes with a detailed look at National Credit Access. This structure was chosen to transform the static report data into an explorable narrative. -->
     <!-- Visualization & Content Choices: 
-        1. National Trends (Change): A line chart (Chart.js) visualizes the progress of literacy and inclusion indices over time, providing immediate context on national performance.
-        2. National Demographics (Compare/Explore): A single, dynamic horizontal bar chart (Chart.js) with filter buttons allows users to compare literacy across multiple dimensions (Region, Gender, Age, Education, Employment, Economic Sector) in a compact, interactive space.
-        3. Gorontalo IPM Components (Change): A multi-line chart shows the trends of each IPM component (UHH, HLS, RLS) over 5 years, offering a deeper look into the drivers of Gorontalo's development.
-        4. Gorontalo Inflation (Compare): A bar chart visualizes year-on-year inflation by expenditure group, providing crucial local economic context that impacts household finances.
-        5. NEW - Cinta Bangga Paham (CBP) Rupiah (Inform/Compare): This new section adds significant value. It includes KPI cards for the latest national vs. Gorontalo index, a line chart for Gorontalo's CBP trend (2022-2024), a grouped bar chart comparing the 3 dimensions (Cinta, Bangga, Paham) over three years, and a horizontal bar chart on the effectiveness of different educational media. This directly translates the new BI memos into actionable insights.
-        6. Credit Access Demographics (Compare): An interactive bar chart allows filtering credit access data by gender and urban/rural classifications, adding a layer of detail to the national financing landscape.
+        1. National Trends (Change): A line chart (Chart.js) visualizes the progress of literacy and inclusion indices.
+        2. National Demographics (Compare/Explore): A single, dynamic horizontal bar chart (Chart.js) with filter buttons allows users to compare literacy across multiple dimensions.
+        3. Gorontalo IPM Components (Change): A multi-line chart shows the trends of each IPM component.
+        4. Gorontalo Inflation (Compare): A bar chart visualizes year-on-year inflation by expenditure group.
+        5. NEW - Gorontalo Economic Drivers (Inform): A new section with styled cards visually represents the analysis of key economic sectors (Government/Education, Agriculture/Fishery, Services/Trade), as direct quantitative data was not available. This translates qualitative analysis into a clear visual summary.
+        6. Cinta Bangga Paham (CBP) Rupiah (Inform/Compare): Includes KPI cards, a line chart for Gorontalo's CBP trend, a grouped bar chart for dimensions, and a horizontal bar chart on media effectiveness.
+        7. Credit Access Demographics (Compare): An interactive bar chart allows filtering credit access data by various demographics.
         Library: Chart.js is used for all visualizations on <canvas>. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -33,6 +34,10 @@
         .section-subtitle { text-align: center; color: #4a5568; max-width: 800px; margin: 0 auto; }
         .section-intro { padding-bottom: 3rem; border-bottom: 1px solid #e2e8f0; }
         .source-caption { text-align: center; font-size: 0.75rem; color: #64748b; margin-top: 0.75rem; }
+        .job-sector-card { background-color: #fff; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); text-align: center; }
+        .job-sector-card .icon { font-size: 2.5rem; margin-bottom: 1rem; color: #2c5282; }
+        .job-sector-card h4 { font-weight: 700; font-size: 1.1rem; color: #1a202c; margin-bottom: 0.5rem; }
+        .job-sector-card p { font-size: 0.9rem; color: #4a5568; line-height: 1.6; }
     </style>
 </head>
 <body class="antialiased">
@@ -77,7 +82,7 @@
                 <div class="chart-container">
                     <canvas id="nationalTrendChart"></canvas>
                 </div>
-                <p class="source-caption">Sumber: SNLIK OJK (Berbagai Edisi), NLIK 2024 memiliki metodologi yang lebih kuat, terstandarisasi, dan kredibel berkat kerja sama dengan BPS, yang menjadikan hasilnya lebih akurat untuk memetakan kondisi literasi dan inklusi keuangan di seluruh Indonesia.</p>
+                <p class="source-caption">Sumber: SNLIK OJK (Berbagai Edisi). Catatan: SNLIK 2024 menggunakan metodologi yang disempurnakan bersama BPS.</p>
             </div>
         </section>
 
@@ -141,6 +146,29 @@
                     </div>
                     <p class="source-caption">Sumber: BPS - IHK dan Inflasi Gorontalo (2024), Hal. 17</p>
                 </div>
+            </div>
+            <!-- New Section for Job Sector Analysis -->
+            <div class="mt-12">
+                 <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Analisis Sektor Pekerjaan Penggerak Ekonomi Gorontalo</h3>
+                 <p class="section-subtitle mb-8">Berdasarkan analisis kualitatif dari berbagai laporan, perkembangan ekonomi Gorontalo ditopang oleh beberapa sektor pekerjaan dominan berikut:</p>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="job-sector-card">
+                        <div class="icon">🏛️</div>
+                        <h4>Sektor Pemerintahan & Pendidikan</h4>
+                        <p>Sebagai pusat provinsi, pekerjaan sebagai ASN dan tenaga pendidik (guru, dosen) menjadi motor penggerak ekonomi yang stabil, terutama di area perkotaan.</p>
+                    </div>
+                    <div class="job-sector-card">
+                        <div class="icon">🌾</div>
+                        <h4>Sektor Pertanian & Perikanan</h4>
+                        <p>Menjadi tulang punggung penyerapan tenaga kerja dan produksi bahan mentah di wilayah kabupaten, membentuk fondasi ekonomi riil masyarakat.</p>
+                    </div>
+                    <div class="job-sector-card">
+                        <div class="icon">🛒</div>
+                        <h4>Sektor Jasa & Perdagangan</h4>
+                        <p>Sektor perdagangan eceran, kuliner, dan jasa lainnya tumbuh seiring meningkatnya daya beli dan IPM, menggerakkan ekonomi konsumsi lokal.</p>
+                    </div>
+                 </div>
+                 <p class="source-caption">Sumber: Analisis Kualitatif dari Laporan Susenas dan IPM Gorontalo</p>
             </div>
         </section>
         
