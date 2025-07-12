@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dasbor Data - Literasi & Inklusi Keuangan Indonesia</title>
+    <!-- Chosen Palette: Professional Blue & Neutral Gray -->
+    <!-- Application Structure Plan: A top-down, data-driven dashboard structure. It starts with high-level national KPIs (Stat Cards), then allows interactive exploration of national demographic data via a filterable chart. It then deep-dives into the Gorontalo case study, visually contrasting its high IPM with specific financial literacy gaps. Finally, it provides granular breakdowns of credit access and the relationship between IPM and gender equality (IPG) at the regency level. This structure was chosen to transform the static report data into an explorable narrative, allowing users to see the big picture and then drill down into specific areas of interest seamlessly. -->
+    <!-- Visualization & Content Choices: 
+        1. National KPIs (Inform): Stat Cards for key indices (Inklusi, Literasi, Gap) provide an instant, high-level summary.
+        2. National Demographics (Compare/Explore): A single, dynamic horizontal bar chart (Chart.js) is used with filter buttons. This allows users to compare literacy across multiple dimensions (Region, Gender, Age, Education, Employment) in a compact space, making it highly interactive and user-driven.
+        3. Gorontalo Paradox (Compare): A donut chart is used to starkly visualize the imbalance between high conventional literacy and very low non-conventional/investment literacy, placed next to a high IPM stat card to emphasize the paradox.
+        4. Credit Access (Compare): Simple, clear bar charts are used to compare formal vs. informal credit access and the popularity of different credit types (like KUR), making the data easily digestible.
+        5. IPM vs. IPG (Relationships): A scatter plot is the ideal choice to visualize the correlation and clustering of Gorontalo's regencies based on two different development indices, with tooltips providing specific data points on hover.
+        Library: Chart.js is used for all visualizations on <canvas> for its responsiveness and interactivity, avoiding static images. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f4f7fa; color: #1a202c; }
+        .chart-container { position: relative; margin: auto; height: 400px; width: 100%; max-width: 800px; }
+        .small-chart-container { position: relative; margin: auto; height: 300px; width: 100%; max-width: 400px; }
+        .nav-link { transition: color 0.3s; }
+        .filter-button { transition: all 0.3s ease; border: 1px solid #cbd5e1; }
+        .filter-button.active { background-color: #2c5282; color: #ffffff; border-color: #2c5282; }
+        .stat-card { background-color: #ffffff; border-radius: 0.75rem; padding: 1.5rem; text-align: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .stat-card .value { font-size: 2.75rem; font-weight: 700; color: #2c5282; }
+        .stat-card .label { font-size: 1rem; color: #4a5568; margin-top: 0.5rem; }
+        .section-title { color: #1a202c; font-size: 2.25rem; font-weight: 700; text-align: center; margin-bottom: 1rem; }
+        .section-subtitle { text-align: center; color: #4a5568; max-width: 800px; margin: 0 auto 3rem auto; line-height: 1.7; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">Dasbor Literasi & Inklusi Keuangan Indonesia</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#nasional" class="nav-link text-gray-600 hover:text-blue-700">Nasional</a>
+                <a href="#gorontalo" class="nav-link text-gray-600 hover:text-blue-700">Fokus Gorontalo</a>
+                <a href="#kredit" class="nav-link text-gray-600 hover:text-blue-700">Akses Pembiayaan</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="nasional" class="pt-12">
+            <h2 class="section-title">Potret Keuangan Nasional</h2>
+            <p class="section-subtitle">Gambaran umum tingkat literasi dan inklusi keuangan di Indonesia berdasarkan data survei terbaru dari OJK, BPS, dan Kemenko Perekonomian. Angka-angka ini menyoroti pencapaian sekaligus tantangan yang ada.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="stat-card">
+                    <div class="value">75,02%</div>
+                    <div class="label">Indeks Inklusi Keuangan (SNLIK 2024)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value">65,43%</div>
+                    <div class="label">Indeks Literasi Keuangan (SNLIK 2024)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="value text-red-600">9,59%</div>
+                    <div class="label">Gap Inklusi vs Literasi</div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="text-xl font-bold text-center mb-2 text-gray-800">Perbandingan Indeks Literasi Nasional</h3>
+                <p class="text-center text-gray-500 mb-6">Pilih filter untuk melihat perbandingan indeks literasi berdasarkan berbagai kategori demografi.</p>
+                <div class="flex flex-wrap justify-center gap-2 mb-6">
+                    <button class="filter-button active py-2 px-4 rounded-full text-sm" onclick="updateNationalChart('wilayah')">Menurut Wilayah</button>
+                    <button class="filter-button py-2 px-4 rounded-full text-sm" onclick="updateNationalChart('gender')">Menurut Gender</button>
+                    <button class="filter-button py-2 px-4 rounded-full text-sm" onclick="updateNationalChart('usia')">Menurut Usia</button>
+                    <button class="filter-button py-2 px-4 rounded-full text-sm" onclick="updateNationalChart('pendidikan')">Menurut Pendidikan</button>
+                    <button class="filter-button py-2 px-4 rounded-full text-sm" onclick="updateNationalChart('pekerjaan')">Menurut Pekerjaan</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="nationalComparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="gorontalo" class="py-24">
+            <h2 class="section-title">Fokus: Paradoks Pembangunan di Gorontalo</h2>
+            <p class="section-subtitle">Meskipun Provinsi Gorontalo menunjukkan kemajuan signifikan dalam pembangunan manusia (IPM), data mengungkapkan tantangan literasi yang kontras, terutama pada pemahaman produk keuangan non-konvensional.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                <div class="lg:col-span-1">
+                    <div class="stat-card mb-6">
+                        <div class="value text-green-600">72,01</div>
+                        <div class="label">IPM Gorontalo 2024 (Kategori Tinggi)</div>
+                    </div>
+                     <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="font-bold text-gray-800 mb-2">Peringkat IPM Kabupaten/Kota</h3>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between"><span>Kota Gorontalo</span> <span class="font-semibold">79,18</span></div>
+                            <div class="flex justify-between"><span>Kab. Bone Bolango</span> <span class="font-semibold">72,82</span></div>
+                            <div class="flex justify-between"><span>Kab. Gorontalo</span> <span class="font-semibold">70,96</span></div>
+                            <div class="flex justify-between"><span>Kab. Pohuwato</span> <span class="font-semibold">70,19</span></div>
+                            <div class="flex justify-between"><span>Kab. Boalemo</span> <span class="font-semibold text-red-600">69,34</span></div>
+                            <div class="flex justify-between"><span>Kab. Gorontalo Utara</span> <span class="font-semibold text-red-600">68,83</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Kesenjangan Literasi Produk Keuangan di Gorontalo</h3>
+                    <div class="chart-container">
+                        <canvas id="gorontaloLiteracyChart"></canvas>
+                    </div>
+                     <p class="text-center text-xs text-gray-500 mt-4">Sumber: Jurnal Frontiers (Payu & Selvi, 2018). Data disederhanakan untuk visualisasi.</p>
+                </div>
+            </div>
+             <div class="mt-12 bg-white p-6 rounded-xl shadow-sm">
+                <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Hubungan IPM dan Kesetaraan Gender (IPG) di Gorontalo, 2024</h3>
+                <div class="chart-container">
+                    <canvas id="ipmIpgScatterChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="kredit" class="py-16">
+            <h2 class="section-title">Peta Akses Pembiayaan Nasional</h2>
+            <p class="section-subtitle">Akses terhadap kredit adalah komponen vital dalam inklusi keuangan. Data Susenas 2023 menunjukkan dominasi kredit formal dan peran penting program Kredit Usaha Rakyat (KUR) dalam pembiayaan masyarakat.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Penerima Kredit: Formal vs. Non-Formal</h3>
+                    <div class="small-chart-container">
+                        <canvas id="creditFormalChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Distribusi Jenis Kredit yang Diterima</h3>
+                     <div class="small-chart-container">
+                        <canvas id="creditTypeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 border-t border-gray-200 py-6">
+        <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
+            <p>Dasbor Data Literasi & Inklusi Keuangan Indonesia.</p>
+            <p class="mt-1">Sumber Data: OJK (SNLIK 2024), Kemenko Perekonomian (Susenas 2023), BPS Provinsi Gorontalo (IPM 2024), Jurnal Frontiers (2018).</p>
+        </div>
+    </footer>
+
+    <script>
+        const dashboardData = {
+            national: {
+                wilayah: { labels: ['Perkotaan', 'Perdesaan'], data: [69.71, 59.25] },
+                gender: { labels: ['Perempuan', 'Laki-laki'], data: [66.75, 64.14] },
+                usia: { labels: ['18-25', '26-35', '36-50', '51-79', '15-17'], data: [70.19, 74.82, 71.72, 52.51, 51.70] },
+                pendidikan: { labels: ['Perguruan Tinggi', 'SMA', 'SMP', 'SD', 'Tidak Sekolah'], data: [86.19, 75.92, 65.76, 57.77, 38.19] },
+                pekerjaan: { labels: ['Pegawai/Profesional', 'Wiraswasta', 'Ibu RT', 'Pekerjaan Lain', 'Petani/Nelayan'], data: [83.22, 78.32, 64.44, 60.21, 57.97] }
+            },
+            gorontalo: {
+                literacy: { labels: ['Produk Konvensional (Tabungan, Kredit)', 'Produk Investasi (Saham, Reksadana, dll)'], data: [85, 15] },
+                ipm_ipg: [
+                    { x: 83.67, y: 69.34, label: 'Kab. Boalemo' },
+                    { x: 83.99, y: 70.96, label: 'Kab. Gorontalo' },
+                    { x: 92.52, y: 70.19, label: 'Kab. Pohuwato' },
+                    { x: 89.26, y: 72.82, label: 'Kab. Bone Bolango' },
+                    { x: 82.83, y: 68.83, label: 'Kab. Gorontalo Utara' },
+                    { x: 88.47, y: 79.18, label: 'Kota Gorontalo' }
+                ]
+            },
+            credit: {
+                formal: { labels: ['Formal', 'Non-Formal'], data: [19.5, 4.4] },
+                type: { labels: ['KUR', 'Koperasi', 'Bank Umum (Non-KUR)', 'Lainnya', 'Leasing', 'Kredit Perorangan', 'BPR', 'Pegadaian'], data: [9.2, 4.2, 3.6, 3.3, 2.2, 1.2, 0.9, 0.9] }
+            }
+        };
+
+        let nationalChart, gorontaloChart, ipmIpgChart, creditFormalChart, creditTypeChart;
+        
+        const chartDefaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                datalabels: {
+                    anchor: 'end',
+                    align: 'end',
+                    formatter: (value) => value + '%',
+                    color: '#334155',
+                    font: { weight: 'bold' }
+                }
+            }
+        };
+
+        function updateNationalChart(filter) {
+            const chartData = dashboardData.national[filter];
+            if (nationalChart) nationalChart.destroy();
+            const ctx = document.getElementById('nationalComparisonChart').getContext('2d');
+            nationalChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.labels,
+                    datasets: [{
+                        label: 'Indeks Literasi',
+                        data: chartData.data,
+                        backgroundColor: ['#60a5fa', '#f87171', '#4ade80', '#fbbf24', '#a78bfa', '#f472b6'],
+                        borderRadius: 4
+                    }]
+                },
+                options: { ...chartDefaultOptions, indexAxis: 'y', scales: { x: { beginAtZero: true, max: 100, grid: { drawOnChartArea: false } } } }
+            });
+            document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.filter-button[onclick="updateNationalChart('${filter}')"]`).classList.add('active');
+        }
+
+        function createGorontaloChart() {
+            const ctx = document.getElementById('gorontaloLiteracyChart').getContext('2d');
+            gorontaloChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: dashboardData.gorontalo.literacy.labels,
+                    datasets: [{
+                        data: dashboardData.gorontalo.literacy.data,
+                        backgroundColor: ['#3b82f6', '#ef4444'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' }, datalabels: { color: '#ffffff', font: { weight: 'bold', size: 14 } } } }
+            });
+        }
+        
+        function createIpmIpgChart() {
+            const ctx = document.getElementById('ipmIpgScatterChart').getContext('2d');
+            ipmIpgChart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Kabupaten/Kota',
+                        data: dashboardData.gorontalo.ipm_ipg,
+                        backgroundColor: '#2563eb',
+                        pointRadius: 8,
+                        pointHoverRadius: 12
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const d = context.raw;
+                                    return `${d.label}: (IPG: ${d.x}, IPM: ${d.y})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Indeks Pembangunan Gender (IPG)' } },
+                        y: { title: { display: true, text: 'Indeks Pembangunan Manusia (IPM)' } }
+                    }
+                }
+            });
+        }
+        
+        function createCreditCharts() {
+            const formalCtx = document.getElementById('creditFormalChart').getContext('2d');
+            creditFormalChart = new Chart(formalCtx, {
+                type: 'bar',
+                data: {
+                    labels: dashboardData.credit.formal.labels,
+                    datasets: [{ data: dashboardData.credit.formal.data, backgroundColor: ['#3b82f6', '#f87171'], borderRadius: 4 }]
+                },
+                options: { ...chartDefaultOptions, plugins: { ...chartDefaultOptions.plugins, datalabels: { ...chartDefaultOptions.plugins.datalabels, color: '#1e293b' } } }
+            });
+
+            const typeCtx = document.getElementById('creditTypeChart').getContext('2d');
+            creditTypeChart = new Chart(typeCtx, {
+                type: 'bar',
+                data: {
+                    labels: dashboardData.credit.type.labels,
+                    datasets: [{ data: dashboardData.credit.type.data, backgroundColor: '#3b82f6', borderRadius: 4 }]
+                },
+                options: { ...chartDefaultOptions, indexAxis: 'y', plugins: { ...chartDefaultOptions.plugins, datalabels: { ...chartDefaultOptions.plugins.datalabels, color: '#1e293b' } } }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            Chart.register(ChartDataLabels);
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            
+            updateNationalChart('wilayah');
+            createGorontaloChart();
+            createIpmIpgChart();
+            createCreditCharts();
+        });
+    </script>
+</body>
+</html>
