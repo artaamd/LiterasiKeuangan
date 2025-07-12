@@ -32,6 +32,7 @@
         .section-title { color: #1a202c; font-size: 2.25rem; font-weight: 700; text-align: center; margin-bottom: 1rem; }
         .section-subtitle { text-align: center; color: #4a5568; max-width: 800px; margin: 0 auto; }
         .section-intro { padding-bottom: 3rem; border-bottom: 1px solid #e2e8f0; }
+        .source-caption { text-align: center; font-size: 0.75rem; color: #64748b; margin-top: 0.75rem; }
     </style>
 </head>
 <body class="antialiased">
@@ -57,15 +58,18 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div class="stat-card">
                     <div class="value">75,02%</div>
-                    <div class="label">Indeks Inklusi Keuangan (SNLIK 2024)</div>
+                    <div class="label">Indeks Inklusi Keuangan</div>
+                    <p class="source-caption mt-2">Sumber: SNLIK OJK (2024), Hal. 26</p>
                 </div>
                 <div class="stat-card">
                     <div class="value">65,43%</div>
-                    <div class="label">Indeks Literasi Keuangan (SNLIK 2024)</div>
+                    <div class="label">Indeks Literasi Keuangan</div>
+                     <p class="source-caption mt-2">Sumber: SNLIK OJK (2024), Hal. 21</p>
                 </div>
                 <div class="stat-card">
                     <div class="value text-red-600">9,59%</div>
                     <div class="label">Gap Inklusi vs Literasi</div>
+                    <p class="source-caption mt-2">Sumber: SNLIK OJK (2024), Hal. 32</p>
                 </div>
             </div>
             <div class="bg-white p-6 rounded-xl shadow-sm">
@@ -73,6 +77,7 @@
                 <div class="chart-container">
                     <canvas id="nationalTrendChart"></canvas>
                 </div>
+                <p class="source-caption">Sumber: SNLIK OJK (Berbagai Edisi)</p>
             </div>
         </section>
 
@@ -92,12 +97,14 @@
                     <div class="chart-container" style="height: 450px;">
                         <canvas id="nationalComparisonChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: SNLIK OJK (2024), Hal. 22-25</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-xl font-bold text-center mb-6 text-gray-800">Komponen Pembentuk Indeks Literasi 2024</h3>
                      <div class="chart-container" style="height: 450px;">
                         <canvas id="literacyComponentsChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: SNLIK OJK (2024), Hal. 26</p>
                 </div>
             </div>
         </section>
@@ -111,25 +118,28 @@
                     <div class="small-chart-container">
                         <canvas id="gorontaloLiteracyChart"></canvas>
                     </div>
-                     <p class="text-center text-xs text-gray-500 mt-4">Sumber: Jurnal Frontiers (Payu & Selvi, 2018)</p>
+                     <p class="source-caption">Sumber: Jurnal Frontiers (Payu & Selvi, 2018), Hal. 5</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Tren Komponen IPM Gorontalo (2020-2024)</h3>
                     <div class="small-chart-container">
                         <canvas id="gorontaloIPMComponentsChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: BPS - Indeks Pembangunan Manusia Gorontalo (2024), Hal. 61-62</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Hubungan IPM vs IPG (2024)</h3>
                     <div class="small-chart-container">
                         <canvas id="ipmIpgScatterChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: BPS - Indeks Pembangunan Manusia Gorontalo (2024), Hal. 44</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Inflasi Tahunan Gorontalo per Kelompok Pengeluaran (2024)</h3>
                     <div class="small-chart-container">
                         <canvas id="gorontaloInflationChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: BPS - IHK dan Inflasi Gorontalo (2024), Hal. 17</p>
                 </div>
             </div>
         </section>
@@ -153,18 +163,21 @@
                     <div class="chart-container" style="height: 350px;">
                         <canvas id="cbpTrendChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: Memo Bank Indonesia DPU (2022, 2023, 2024)</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Perkembangan Dimensi CBP Rupiah di Gorontalo (2022-2024)</h3>
                     <div class="chart-container" style="height: 350px;">
                         <canvas id="cbpDimensionsChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: Memo Bank Indonesia DPU (2022, 2023, 2024)</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
                     <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Efektivitas Media Edukasi CBP Rupiah (Nasional, 2024)</h3>
                     <div class="chart-container" style="height: 350px;">
                         <canvas id="mediaEffectivenessChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: Memo Bank Indonesia DEKU (2024), Hal. 2</p>
                 </div>
             </div>
         </section>
@@ -183,12 +196,14 @@
                     <div class="chart-container" style="height: 350px;">
                         <canvas id="creditAccessChart"></canvas>
                     </div>
+                     <p class="source-caption">Sumber: Susenas (2023), Hal. 28-30</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Distribusi Jenis Kredit yang Paling Banyak Digunakan</h3>
                      <div class="chart-container" style="height: 350px;">
                         <canvas id="creditTypeChart"></canvas>
                     </div>
+                    <p class="source-caption">Sumber: Susenas (2023), Hal. 28</p>
                 </div>
             </div>
         </section>
