@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dasbor Data Lengkap - Literasi & Inklusi Keuangan Indonesia</title>
+    <title>dasbor untuk ambil data, silahkan tmn2 kalo butuh data dari referensi, ada dsni semua</title>
+    <!-- Chosen Palette: Professional Blue & Neutral Gray -->
+    <!-- Application Structure Plan: A top-down, data-driven dashboard. It starts with National KPIs & Trends, then allows interactive exploration of national demographic data via a filterable chart. It then deep-dives into the Gorontalo Case Study (IPM, Literacy, Economy). A new, comprehensive section on Bank Indonesia's "Cinta Bangga Paham Rupiah" survey has been added, with its own trends, breakdowns, and media analysis. The dashboard concludes with a detailed look at National Credit Access. This structure was chosen to transform the static report data into an explorable narrative, allowing users to see the big picture and then drill down into specific areas of interest seamlessly. -->
+    <!-- Visualization & Content Choices: 
+        1. National Trends (Change): A line chart (Chart.js) visualizes the progress of literacy and inclusion indices over time, providing immediate context on national performance.
+        2. National Demographics (Compare/Explore): A single, dynamic horizontal bar chart (Chart.js) with filter buttons allows users to compare literacy across multiple dimensions (Region, Gender, Age, Education, Employment, Economic Sector) in a compact, interactive space.
+        3. Gorontalo IPM Components (Change): A multi-line chart shows the trends of each IPM component (UHH, HLS, RLS) over 5 years, offering a deeper look into the drivers of Gorontalo's development.
+        4. Gorontalo Inflation (Compare): A bar chart visualizes year-on-year inflation by expenditure group, providing crucial local economic context that impacts household finances.
+        5. NEW - Cinta Bangga Paham (CBP) Rupiah (Inform/Compare): This new section adds significant value. It includes KPI cards for the latest national vs. Gorontalo index, a line chart for Gorontalo's CBP trend (2022-2024), a grouped bar chart comparing the 3 dimensions (Cinta, Bangga, Paham) over three years, and a horizontal bar chart on the effectiveness of different educational media. This directly translates the new BI memos into actionable insights.
+        6. Credit Access Demographics (Compare): An interactive bar chart allows filtering credit access data by gender and urban/rural classifications, adding a layer of detail to the national financing landscape.
+        Library: Chart.js is used for all visualizations on <canvas>. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
@@ -21,17 +32,16 @@
         .section-title { color: #1a202c; font-size: 2.25rem; font-weight: 700; text-align: center; margin-bottom: 1rem; }
         .section-subtitle { text-align: center; color: #4a5568; max-width: 800px; margin: 0 auto; }
         .section-intro { padding-bottom: 3rem; border-bottom: 1px solid #e2e8f0; }
-        .section-divider { border-top: 1px solid #e2e8f0; }
     </style>
 </head>
 <body class="antialiased">
 
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-gray-800">Dasbor Data Keuangan Indonesia</h1>
+            <h1 class="text-xl font-bold text-gray-800">Dasbor Literasi & Inklusi Keuangan Indonesia</h1>
             <div class="hidden md:flex space-x-6 text-sm">
-                <a href="#nasional" class="nav-link text-gray-600 hover:text-blue-700">Ringkasan Nasional</a>
-                <a href="#demografi" class="nav-link text-gray-600 hover:text-blue-700">Detail Demografi</a>
+                <a href="#nasional" class="nav-link text-gray-600 hover:text-blue-700">Nasional</a>
+                <a href="#demografi" class="nav-link text-gray-600 hover:text-blue-700">Demografi</a>
                 <a href="#gorontalo" class="nav-link text-gray-600 hover:text-blue-700">Fokus Gorontalo</a>
                 <a href="#cbp-rupiah" class="nav-link text-gray-600 hover:text-blue-700">Pemahaman CBP Rupiah</a>
                 <a href="#kredit" class="nav-link text-gray-600 hover:text-blue-700">Akses Pembiayaan</a>
@@ -42,16 +52,16 @@
     <main class="container mx-auto px-6 py-10">
 
         <section id="nasional" class="pt-10 section-intro">
-            <h2 class="section-title">Dasbor data materi mas mike, silahkan tmn2 ambe data dsni yaw</h2>
-            <p class="section-subtitle mb-10">Indikator utama dan tren historis yang menggambarkan kondisi literasi dan inklusi keuangan di Indonesia.</p>
+            <h2 class="section-title">Dasbor data materi mas mike, silahkan tmn2 ambe data dsni yaw </h2>
+            <p class="section-subtitle mb-10">Gambaran umum tingkat literasi dan inklusi keuangan di Indonesia berdasarkan data survei terbaru dari OJK, BPS, dan Kemenko Perekonomian. Angka-angka ini menyoroti pencapaian sekaligus tantangan yang ada.</p>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div class="stat-card">
                     <div class="value">75,02%</div>
-                    <div class="label">Indeks Inklusi (SNLIK 2024)</div>
+                    <div class="label">Indeks Inklusi Keuangan (SNLIK 2024)</div>
                 </div>
                 <div class="stat-card">
                     <div class="value">65,43%</div>
-                    <div class="label">Indeks Literasi (SNLIK 2024)</div>
+                    <div class="label">Indeks Literasi Keuangan (SNLIK 2024)</div>
                 </div>
                 <div class="stat-card">
                     <div class="value text-red-600">9,59%</div>
@@ -145,7 +155,7 @@
                     </div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Rincian Indeks CBP Gorontalo per Dimensi (2024)</h3>
+                    <h3 class="text-xl font-bold text-center mb-4 text-gray-800">Perkembangan Dimensi CBP Rupiah di Gorontalo (2022-2024)</h3>
                     <div class="chart-container" style="height: 350px;">
                         <canvas id="cbpDimensionsChart"></canvas>
                     </div>
@@ -187,8 +197,8 @@
 
     <footer class="bg-gray-100 border-t border-gray-200 py-6">
         <div class="container mx-auto px-6 text-center text-gray-500 text-sm">
-            <p>Dasbor Data Literasi & Inklusi Keuangan Indonesia.</p>
-            <p class="mt-1">Sumber Data: OJK (SNLIK 2024 & SNLKI 2021-2025), Bank Indonesia (Survei CBP 2022, 2023, 2024), Kemenko Perekonomian (Susenas 2023), BPS Gorontalo (IPM & Inflasi 2024), Jurnal Frontiers (2018).</p>
+            <p>Dasbor dokumen mas mike.</p>
+            <p class="mt-1">Sumber Data: OJK (SNLIK 2024), Bank Indonesia (Survei CBP 2022-2024), Kemenko Perekonomian (Susenas 2023), BPS Gorontalo (IPM & Inflasi 2024), Jurnal Frontiers (2018).</p>
         </div>
     </footer>
 
@@ -221,7 +231,12 @@
             },
             cbp: {
                 trends: { labels: ['2022', '2023', '2024'], data: [71.75, 76.79, 80.73] },
-                dimensions: { labels: ['Bangga', 'Cinta', 'Paham'], data: [82.24, 81.75, 78.20] },
+                dimensions: { 
+                    labels: ['Cinta', 'Bangga', 'Paham'],
+                    data2022: [72.74, 76.50, 66.00],
+                    data2023: [78.10, 76.45, 75.83],
+                    data2024: [81.75, 82.24, 78.20],
+                },
                 mediaEffectiveness: { labels: ['Sosialisasi Offline', 'Webinar/Online', 'Media Luar Ruang', 'Media Sosial', 'Radio'], data: [48, 35, 9, 6, 2] }
             }
         };
@@ -268,9 +283,13 @@
                 type: 'bar',
                 data: {
                     labels: dashboardData.cbp.dimensions.labels,
-                    datasets: [{ label: 'Indeks 2024', data: dashboardData.cbp.dimensions.data, backgroundColor: '#60a5fa', borderRadius: 4 }]
+                    datasets: [
+                        { label: '2022', data: dashboardData.cbp.dimensions.data2022, backgroundColor: '#a78bfa', borderRadius: 4 },
+                        { label: '2023', data: dashboardData.cbp.dimensions.data2023, backgroundColor: '#60a5fa', borderRadius: 4 },
+                        { label: '2024', data: dashboardData.cbp.dimensions.data2024, backgroundColor: '#2563eb', borderRadius: 4 }
+                    ]
                 },
-                options: { ...chartDefaultOptions, plugins: { datalabels: { anchor: 'end', align: 'end', formatter: (v) => v } }, scales: { y: { min: 75, max: 85 } } }
+                options: { ...chartDefaultOptions, plugins: { legend: { display: true, position: 'bottom' }, datalabels: { display: false } }, scales: { y: { min: 60, max: 85 } } }
             });
         }
         
